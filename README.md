@@ -35,6 +35,15 @@ bash
 node index.js
 
 
+**Entrada (JSON Original):**
+```json
+{ "numeroPedido": "v10089015vdb-01", "valorTotal": 10000, ... }
+
+{ "orderId": "v10089016vdb", "value": 10000, ... }
+
+
+
+
 A API estará disponível em: http://localhost:3000
 Desenvolvido com 💜 por Tamires para o processo seletivo Professional Services.
 
