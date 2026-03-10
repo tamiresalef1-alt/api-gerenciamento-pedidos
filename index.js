@@ -2,14 +2,19 @@ const express = require('express');
 const app = express();
 app.use(express.json());
 
-// Banco de dados temporário
+let pedidos = [
+  { id: 1, cliente: "Tamires Dev", produto: "Curso de Node", status: "Pendente" }
+];
 let orders = [];
 
-// 1. Criar um novo pedido (OBRIGATÓRIO) com Mapping
+// Rota Raiz
+app.get('/', (req, res) => {
+  res.send('🏠 API da Tamires Online! Vá para /pedidos');
+}); // <-- Faltava fechar aqui
+
+// 1. Criar um novo pedido
 app.post('/order', (req, res) => {
     const data = req.body;
-    
-    // Fazendo a transformação dos dados (Mapping) exigida no PDF
     const mappedOrder = {
         orderId: data.numeroPedido,
         value: data.valorTotal,
@@ -20,24 +25,22 @@ app.post('/order', (req, res) => {
             price: item.valorItem
         }))
     };
-
     orders.push(mappedOrder);
-    console.log("✅ Pedido recebido e transformado!");
     res.status(201).json(mappedOrder);
 });
 
-// 2. Obter dados de UM pedido específico (OBRIGATÓRIO)
+// 2. Listar pedidos
+app.get('/pedidos', (req, res) => {
+  res.json(pedidos);
+}); // <-- Faltava fechar aqui
+
+// 3. Obter um pedido específico
 app.get('/order/:orderId', (req, res) => {
     const order = orders.find(o => o.orderId === req.params.orderId);
     if (!order) return res.status(404).json({ error: "Pedido não encontrado" });
     res.json(order);
 });
 
-// 3. Listar todos os pedidos (OPCIONAL - conta pontos!)
-app.get('/order/list', (req, res) => {
-    res.json(orders);
-});
-
 app.listen(3000, () => {
-    console.log('🚀 API Jitterbit rodando em http://localhost:3000');
+  console.log('🚀 Servidor turbinado em http://localhost:3000');
 });
